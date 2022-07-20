@@ -12,7 +12,7 @@ Radatron uses a slightly old version of Detectron2 (i.e., [0.4](https://github.c
 
 Install Radatron
 ```
-git clone https://gitlab.engr.illinois.edu/waleed3/radatron
+git clone https://github.com/waleedillini/radatron.git
 cd radatron && pip install -e .
 ```
 
