@@ -52,7 +52,7 @@ Download the processed Radatron dataset [here](https://uofi.box.com/v/radatronda
         |-- heatmap_1chip
 ```
 
-More information about the dataset can be found at the dataset documentation page [here](https://github.com/waleedillini/radatronDataset)
+More information about the dataset can be found at the dataset documentation page [here](https://github.com/waleedillini/radatronDataset).
 
 ## Train Radatron
 ```
