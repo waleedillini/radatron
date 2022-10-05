@@ -16,15 +16,20 @@ class RadatronMapper:
         self.preprocess = cfg.PREPROCESS
         self.dataloading = cfg.DATALOADING
         self.augs = cfg.AUGS
-        self.apply_augs = True if mode=="train" else False
+        self.apply_augs = True if mode=="train" else False #Only apply augmentations for training
         self.angle_range = cfg.DATALOADING.ANGLE_RANGE
 
     def __call__(self, dataset_dict):
         input_path = dataset_dict["file_name"] if self.mode=='train' else dataset_dict["file_name"][1:]
         if self.style == "PB":
+            #First, load the files. For "PB" (Radatron, high-res + low-res), load both the high-res and low-res matfiles
             X1, X2, i_path = self.input_loader(input_path = input_path)
+            
+            #Transform the loaded files into the desired dimension/format.
             X1 = self.change_style(input=X1)
             X2 = self.change_style(input=X2)
+            
+            #Apply preprocessing
             X1 = self.preprocess_input(X1, stream=1)
             X2 = self.preprocess_input(X2, stream=2)
             X = {
@@ -33,10 +38,16 @@ class RadatronMapper:
             }
 
         else:
+            #If not using the two-stream Radatron, load only a single file.
             X, i_path = self.input_loader(input_path = input_path)  #W,H,C or R,P,C
+            
+            #Transform the loaded file into the desired dimension/format.
             X = self.change_style(input = X) #H,W,C or R,P,C
+            
+            #Apply preprocessing
             X = self.preprocess_input(X)#, normalizer=normalizer) #H,W,C or R,P,C
         
+        #Apply augmentations
         if self.apply_augs:
             X, annos = self.augment(X, dataset_dict)
             

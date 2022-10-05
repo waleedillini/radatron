@@ -10,12 +10,11 @@ def setup(args):
     cfg.merge_from_other_cfg(get_cfg())
     cfg.merge_from_file(args.config_file)
     cfg.merge_from_list(args.opts)
-    if cfg.DATALOADING.INPUT_STYLE in ["P", "P1", "PB", "P1CHIP", "PBD"]:
+    if cfg.DATALOADING.INPUT_STYLE in ["P", "P1", "PB", "P1CHIP"]:
         cfg.MODEL.PIXEL_MEAN = (0,)
         cfg.MODEL.PIXEL_STD = (1,)
-    if cfg.DATALOADING.INPUT_STYLE in ["PB", "PBD"]:
-        cfg.MODEL.META_ARCHITECTURE = "Radatron"
-        cfg.MODEL.BACKBONE.NAME = "build_radatron_resnet_fpn_backbone"
+    if cfg.DATALOADING.INPUT_STYLE in ["P", "P1", "P1CHIP"]:
+        cfg.MODEL.META_ARCHITECTURE = "GeneralizedRCNN"
     cfg.freeze()
     default_setup(
         cfg, args

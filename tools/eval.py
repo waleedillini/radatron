@@ -9,29 +9,26 @@ from radatron.data import RadatronMapper
 from radatron.evaluation import RadatronEvaluator
 from radatron.config.radatron_setup import setup
 from radatron.data.dataset.register_radatron_dataset import register_radatron
+from radatron.modeling import *
 
-from train import seed_everything
 
 logger = logging.getLogger("detectron2")
 
-args = default_argument_parser().parse_args()
-cfg = setup(args)
 
 def main(args):
     cfg = setup(args)
-    seed_everything(cfg.SEED)
     
     cfg.defrost()
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST =0.05
     cfg.MODEL.ROI_HEADS.NMS_THRESH_TEST=0.05
     cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, "model_final.pth")
     coco_eval_path = os.path.join(cfg.OUTPUT_DIR, "Test_coco_format.json")
-    cfg.DATASETS.TEST = ("Test_coco",)
+    cfg.DATASETS.TEST = ("radar_val",)
 
     register_radatron(cfg)
      
-    evaluator = RadatronEvaluator("Test_coco", cfg, False, output_dir=cfg.OUTPUT_DIR)
-    val_loader = build_detection_test_loader(cfg, "Test_coco", mapper=RadatronMapper(cfg, mode='eval')) 
+    evaluator = RadatronEvaluator("radar_val", cfg, False, output_dir=cfg.OUTPUT_DIR)
+    val_loader = build_detection_test_loader(cfg, "radar_val", mapper=RadatronMapper(cfg, mode='eval')) 
 
     model = build_model(cfg)
     DetectionCheckpointer(model).load(cfg.MODEL.WEIGHTS)

@@ -1,5 +1,5 @@
 MODEL:
-  META_ARCHITECTURE: "GeneralizedRCNN"
+  META_ARCHITECTURE: "Radatron" #"GeneralizedRCNN" for single stream
   BACKBONE:
     FREEZE_AT: 0
     NAME: "build_radatron_resnet_fpn_backbone"
@@ -90,7 +90,7 @@ DATAPATHS:
 FUSION: 
   COMBINE_CONV: 3
 DATALOADING:
-  INPUT_STYLE: "P" #PBD: 9tx, 1tx+dop, #P: Power Only, P1: Power 1TX only, #P1chip: Power 1 chip only, PB: Power 9TX+1TX,
+  INPUT_STYLE: "PB" #P: High-Res Only, P1: Low-Res Only, #P1chip: 1 chip only, PB: high-res + low-res (Radatron),
   COMPENSATION: True 
   NUM_SAMPLES: -1 #all
   P2C_WEIGHTS: 'p2c_weights.mat' #256x320 

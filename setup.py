@@ -6,5 +6,5 @@ setup(
     author="Waleed Ahmed",
     description="Radatron: Accurate Detection using Multi-Resolution Cascaded MIMO Radar, ECCV 2022",
     packages=find_packages(exclude=("configs", "tests")),
-    install_requires=["detectron2"],
+    #install_requires=["detectron2"],
 )
